@@ -22,10 +22,10 @@ class Cli : CliktCommand() {
     private val sdFragmentLength: Float? by option(
         "--sd-fragment-length", help = "standard deviation of fragment length for single end reads"
     ).float()
-    private val outputPrefix: String by option("-output-prefix", help = "output file name prefix; defaults to 'output'").default("output")
+    private val outputPrefix: String by option("--output-prefix", help = "output file name prefix; defaults to 'output'").default("output")
 
     private val cores: Int by option("--cores", help = "number of cores available to the task; default 1").int().default(1)
-    private val outputDirectory by option("-output-directory", help = "path to output directory")
+    private val outputDirectory by option("--output-directory", help = "path to output directory")
         .path().required()
 
     override fun run() {
