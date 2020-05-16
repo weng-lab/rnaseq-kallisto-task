@@ -4,7 +4,7 @@ import util.*
 import java.nio.file.*
 import util.CmdRunner
 
-data class KallistoParameters (
+data class KallistoQuantParameters (
     val r1: Path,
     val r2: Path? = null,
     val index: Path,
@@ -22,7 +22,7 @@ val STRANDED: Map<String, String> = mapOf(
     "reverse" to "--rf-stranded"
 )
 
-fun CmdRunner.kallisto(parameters: KallistoParameters) {
+fun CmdRunner.kallistoQuant(parameters: KallistoQuantParameters) {
 
     Files.createDirectories(parameters.outputDirectory)
 
