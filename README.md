@@ -1,6 +1,7 @@
+
 # kallisto task for RNA-seq
 
-This task provides a convenience wrapper around [kallisto](https://pachterlab.github.io/kallisto/). It computes gene quantifications from reads in FASTQ format.
+This task provides a convenience wrapper around [kallisto](https://pachterlab.github.io/kallisto/). It can compute gene quantifications from reads in FASTQ format or build a kallisto index from transcript sequences in FASTA format.
 
 ## Running
 
@@ -8,9 +9,15 @@ We encourage running this task as a Docker image, which is publicly available th
 ```
 docker pull docker.pkg.github.com/krews-community/rnaseq-kallisto-task/rnaseq-kallisto:latest
 ```
-The task requires a pre-built kallisto index to be provided. A kallisto index can be built from a FASTA with gene or transcript sequences by running
+The task requires a pre-built kallisto index to be provided. A kallisto index can be built from one or more FASTA files with gene or transcript sequences by running this task:
 ```
-kallisto index -i index.idx input.fa
+docker run \
+    --volume /path/to/inputs:/input \
+    --volume /path/to/outputs:/output \
+    docker.pkg.github.com/krews-community/rnaseq-kallisto-task/rnaseq-kallisto:latest \
+    java -jar /app/kallisto.jar index \
+        --sequence /input/seq1.fa --sequence /input/seq2.fa \
+        --output /output/index.idx
 ```
 Then, to perform quantifications, simply run:
 ```
@@ -18,14 +25,22 @@ docker run \
     --volume /path/to/inputs:/input \
     --volume /path/to/outputs:/output \
     docker.pkg.github.com/krews-community/rnaseq-kallisto-task/rnaseq-kallisto:latest \
-    java -jar /app/kallisto.jar --r1 /input/r1.fastq.gz --r2 /input/r2.fastq.gz \
+    java -jar /app/kallisto.jar quant \
+        --r1 /input/r1.fastq.gz --r2 /input/r2.fastq.gz \
         --index /input/index.idx --output-directory /output
 ```
 
 This will produce an output directory containing quantifications (`output.abundance.tsv`).
 
 ### Parameters
-This task supports several parameters:
+**Indexing**:
+|name|description|default|
+|--|--|--|
+|sequence|path to input FASTA sequences; many can be provided|(required)|
+|output|path to output file; if it exists, it will be overwritten|(required)|
+|kmer-size|the kmer size to use|31|
+|make-unique|if set, sequences with duplicate names are made unique|false|
+**Quantification**:
 |name|description|default|
 |--|--|--|
 |r1|path to single-end or pair 1 reads in FASTQ format|(required)|
