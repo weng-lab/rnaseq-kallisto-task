@@ -1,4 +1,3 @@
-
 # kallisto task for RNA-seq
 
 This task provides a convenience wrapper around [kallisto](https://pachterlab.github.io/kallisto/). It can compute gene quantifications from reads in FASTQ format or build a kallisto index from transcript sequences in FASTA format.
@@ -40,6 +39,7 @@ This will produce an output directory containing quantifications (`output.abunda
 |output|path to output file; if it exists, it will be overwritten|(required)|
 |kmer-size|the kmer size to use|31|
 |make-unique|if set, sequences with duplicate names are made unique|false|
+
 **Quantification**:
 |name|description|default|
 |--|--|--|
